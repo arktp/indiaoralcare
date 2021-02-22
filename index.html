@@ -1,0 +1,203 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width"
+    />
+    <link rel="stylesheet" href="/style.css" />
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
+  </head>
+
+  <body style="margin : 0px; overflow: hidden;">
+    <a-scene
+      cursor="rayOrigin: mouse"
+      vr-mode-ui="enabled: false"
+      embedded
+      arjs="sourceType: webcam;
+            trackingMethod: best;
+            debugUIEnabled: false"
+    >
+      <a-assets>
+        <video
+          id="vid"
+          src="https://cdn.glitch.com/81c4cea6-2eaa-4da7-882d-327377bd72e6%2Fvid_step1.mp4?v=1612790317721"
+          webkit-playsinline
+          playsinline
+          autoplay
+          loop="true"
+        ></video>
+
+        <video
+          id="vid2"
+          src="https://cdn.glitch.com/81c4cea6-2eaa-4da7-882d-327377bd72e6%2Fvid_step2.mp4?v=1612790341305"
+          webkit-playsinline
+          playsinline
+          autoplay
+          loop="true"
+        ></video>
+
+        <video
+          id="vid3"
+          src="https://cdn.glitch.com/81c4cea6-2eaa-4da7-882d-327377bd72e6%2Fvid_step3.mp4?v=1612790339715"
+          webkit-playsinline
+          playsinline
+          autoplay
+          loop="true"
+        ></video>
+      </a-assets>
+
+      <a-marker preset="hiro" vidhandler>
+        <a-video
+          rotation="-90 0 0"
+          width="1.6"
+          height="0.8"
+          src="#vid"
+          opacity="1"
+        >
+        </a-video>
+      </a-marker>
+
+      <a-marker preset="kanji" vidhandler2>
+        <a-video
+          rotation="-90 0 0"
+          width="1.6"
+          height="0.8"
+          src="#vid2"
+          opacity="1"
+        >
+        </a-video>
+      </a-marker>
+
+      <a-marker
+        type="pattern"
+        url="https://cdn.glitch.com/81c4cea6-2eaa-4da7-882d-327377bd72e6%2Fpattern-b.patt?v=1612787406931"
+        vidhandler3
+      >
+        <a-video
+          rotation="-90 0 0"
+          width="1.6"
+          height="0.8"
+          src="#vid3"
+          opacity="1"
+        >
+        </a-video>
+      </a-marker>
+
+      <a-entity camera></a-entity>
+    </a-scene>
+
+    <button id="playButton" class="btn" onclick="clickedbtn()">
+      PLAY VIDEO
+    </button>
+    
+    <button id="playButton2" class="btn" onclick="clickedbtn2()">
+      PLAY VIDEO
+    </button>
+    
+    <button id="playButton3" class="btn" onclick="clickedbtn3()">
+      PLAY VIDEO
+    </button>
+
+    <!--<button id="playButton" class="button" onclick="play('alpha')">-->
+    <!--<b>PLAY VIDEO</b>-->
+    <!--</button>-->
+    <!-- we add detectionMode and matrixCodeType to tell AR.js to recognize barcode markers -->
+  </body>
+
+  <script>
+    function clickedbtn() {
+      var btn_clicked = true;
+      var vid = document.querySelector("#vid");
+      document.getElementById("playButton").style.display = "none";
+      vid.play();
+    }
+    
+    function clickedbtn2() {
+      var btn_clicked = true;
+      var vid = document.querySelector("#vid2");
+      document.getElementById("playButton2").style.display = "none";
+      vid.play();
+    }
+    
+    function clickedbtn3() {
+      var btn_clicked = true;
+      var vid = document.querySelector("#vid3");
+      document.getElementById("playButton3").style.display = "none";
+      vid.play();
+    }
+
+    AFRAME.registerComponent("vidhandler", {
+      // ...
+      init: function() {
+        // Set up initial state and variables.
+        this.toggle = false;
+        this.vid = document.querySelector("#vid");
+        this.vid.pause();
+      },
+
+      tick: function() {
+        if (this.el.object3D.visible == true) {
+          if (!this.toggle) {
+            this.toggle = true;
+            var pos = this.el.object3D.position;
+            document.getElementById("playButton").style.display = "block";
+          }
+        } else {
+          this.toggle = false;
+          this.vid.pause();
+          document.getElementById("playButton").style.display = "none";
+        }
+      }
+    });
+    
+    AFRAME.registerComponent("vidhandler2", {
+      // ...
+      init: function() {
+        // Set up initial state and variables.
+        this.toggle = false;
+        this.vid = document.querySelector("#vid2");
+        this.vid.pause();
+      },
+
+      tick: function() {
+        if (this.el.object3D.visible == true) {
+          if (!this.toggle) {
+            this.toggle = true;
+            var pos = this.el.object3D.position;
+            document.getElementById("playButton2").style.display = "block";
+          }
+        } else {
+          this.toggle = false;
+          this.vid.pause();
+          document.getElementById("playButton2").style.display = "none";
+        }
+      }
+    });
+    
+    AFRAME.registerComponent("vidhandler3", {
+      // ...
+      init: function() {
+        // Set up initial state and variables.
+        this.toggle = false;
+        this.vid = document.querySelector("#vid3");
+        this.vid.pause();
+      },
+
+      tick: function() {
+        if (this.el.object3D.visible == true) {
+          if (!this.toggle) {
+            this.toggle = true;
+            var pos = this.el.object3D.position;
+            document.getElementById("playButton3").style.display = "block";
+          }
+        } else {
+          this.toggle = false;
+          this.vid.pause();
+          document.getElementById("playButton3").style.display = "none";
+        }
+      }
+    });
+  </script>
+</html>
